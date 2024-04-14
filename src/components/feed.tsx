@@ -1,5 +1,7 @@
 import logo from '../assets/images/Sakurasou no Pet na Kanojo - 18 - Large 28.jpg';
 import logo2 from '../assets/images/0048_Movie.png'
+import { Link } from 'react-router-dom';
+
 import { useState } from "react";
 
 interface ModalProps {
@@ -85,7 +87,7 @@ const NewsFeed: React.FC<ModalProps> = (({toggleModal}) => {
 
                     {/* POST */}
                     <div className="overflow-hidden flex justify-center bg-gray-600 rounded-lg">
-                        <img src={logo2} alt="" className=' cursor-pointer object-cover' onClick={toggleModal}/>
+                        <img src={logo2} alt="" className=' cursor-pointer object-cover' onClick={toggleModal}/>                     
                     </div>
                     
                     {/* NUMBER OF LIKED POST */}

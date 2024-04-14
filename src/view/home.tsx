@@ -5,17 +5,19 @@ import post2 from '../src/assets/images/434677819_1221258789084254_5754619137726
 import { useState } from 'react';
 import { AnimatePresence } from "framer-motion"
 
-import ModalPost from './modal/modalPost';
-import NavBar from './components/navbar';
-import SideBar from './components/sidebar';
-import NewsFeed from './components/feed';
-import LeftSideBar from './components/leftSideBar';
+import ModalPost from '../modal/modalPost';
+import NavBar from '../components/navbar';
+import SideBar from '../components/sidebar';
+import NewsFeed from '../components/feed';
+import LeftSideBar from '../components/leftSideBar';
+
+import { useNavigate } from 'react-router-dom';
 
 const Home: React.FC = (() => {
 
     const [modal, setModal] = useState<boolean>(false);
     
-
+    const navigate = useNavigate();
 
 
     /* DISABLE BODY SCROLL OF OPENING MODAL */

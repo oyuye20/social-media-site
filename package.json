@@ -12,10 +12,16 @@
   "dependencies": {
     "@iconify/json": "^2.2.198",
     "framer-motion": "^11.0.26",
+    "localforage": "^1.10.0",
+    "match-sorter": "^6.3.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.3",
+    "react-router-dom": "^6.22.3",
+    "sort-by": "^0.0.2"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@iconify/tailwind": "^0.1.4",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",

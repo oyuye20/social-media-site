@@ -1,8 +1,9 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { DevTool } from "@hookform/devtools";
 
+
 type FormValues = {
-    username: string
+    email: string
     password: string
 }
 
@@ -12,8 +13,8 @@ const Login = (()=> {
     const { register, control, handleSubmit, formState } = form;
     const { errors } = formState;
 
-    const onSubmit = (formData: FormValues) => {
-        console.log('form submitted', formData);
+    const onSubmit = async(formData: FormValues) => {
+
     }
 
     return(
@@ -37,8 +38,8 @@ const Login = (()=> {
                                 <label htmlFor="" className="text-xl">Username</label>
                                 <input type="text" id="username" className="border-2 
                                 border-[#111111] bg-transparent text-lg p-2 rounded-xl"
-                                {...register("username", {required: {value: true, message:"Username Required"}})}/>
-                                <p className="text-red-500 font-bold">{errors.username?.message}</p>
+                                {...register("email", {required: {value: true, message:"Email Required"}})}/>
+                                <p className="text-red-500 font-bold">{errors.email?.message}</p>
                             </div>
                             
 

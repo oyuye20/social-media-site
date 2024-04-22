@@ -1,6 +1,5 @@
 import logo from '../assets/images/Sakurasou no Pet na Kanojo - 18 - Large 28.jpg';
 import logo2 from '../assets/images/0048_Movie.png'
-import { Link } from 'react-router-dom';
 
 import { useState } from "react";
 
@@ -10,9 +9,10 @@ interface ModalProps {
 
 const NewsFeed: React.FC<ModalProps> = (({toggleModal}) => {
     const [hoverProfile, setHoverProfile] = useState(false);
+    const [isLiked, setLike] = useState(false);
 
     return (
-    <div className="xl:ms-[300px] xl:me-[400px] h-full pt-5 border-2 border-green-500 me-[300px] pb-5">
+    <div className="xl:ms-[300px] xl:me-[400px] h-full pt-5 me-[300px] pb-5">
         <div className="flex flex-col gap-7 px-4">
             <div className="bg-white p-4 rounded-lg">
                 <input type="text" className="border-2 border-[#CDCDCD] p-2 rounded-lg w-full"
@@ -93,7 +93,8 @@ const NewsFeed: React.FC<ModalProps> = (({toggleModal}) => {
                     {/* NUMBER OF LIKED POST */}
                     <div className="flex gap-4 p-3">
                         <div className="flex items-center gap-1">
-                            <span className="icon-[ph--heart-fill] text-3xl hover:text-red-500 hover:cursor-pointer"></span> 
+                            <span onClick={()=> setLike(prevCheck => !prevCheck)} style={{color: isLiked ? "red": "black"}} 
+                            className="icon-[ph--heart-fill] text-3xl hover:text-red-500 hover:cursor-pointer"></span> 
                             <span className='font-bold text-[#3D3D3D]'>1500</span>                     
                         </div>
 

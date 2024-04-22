@@ -10,15 +10,20 @@ import NavBar from '../components/navbar';
 import SideBar from '../components/sidebar';
 import NewsFeed from '../components/feed';
 import LeftSideBar from '../components/leftSideBar';
-
-import { useNavigate } from 'react-router-dom';
+import Api from "../utils/axios";
+import { UserInfo } from '../types/user';
 
 const Home: React.FC = (() => {
 
     const [modal, setModal] = useState<boolean>(false);
     
-    const navigate = useNavigate();
 
+    Api.get<UserInfo>('api/user').then((res)=>{
+        console.log(res.data);
+    }).catch((err)=>{
+        console.log(err);
+        
+    })
 
     /* DISABLE BODY SCROLL OF OPENING MODAL */
     const [disableScroll, setDisableScroll] = useState(false);
@@ -31,6 +36,7 @@ const Home: React.FC = (() => {
 
     return(
         <>
+        
         <AnimatePresence>
             <ModalPost isOpen={modal} onClose={toggleModal} />          
         </AnimatePresence>
@@ -38,14 +44,17 @@ const Home: React.FC = (() => {
         <NavBar />
 
         <main style={{position: disableScroll ? "fixed" : "relative"}} className="min-h-0 bg-[#1C273D] flex w-full pt-[65px]">
+
+            
             {/* SIDEBAR */}
             <SideBar />
-
             {/* MAIN CONTENT */}
             <NewsFeed toggleModal={toggleModal}/>
 
+
             {/* RIGHT SIDEBAR */}
             <LeftSideBar />
+            
         </main>
         </>
     )

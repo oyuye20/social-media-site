@@ -1,5 +1,8 @@
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm} from "react-hook-form"
 import { DevTool } from "@hookform/devtools";
+import Api from "../utils/axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 type FormValues = {
@@ -8,15 +11,26 @@ type FormValues = {
 }
 
 const Login = (()=> {
-
+    const navigate = useNavigate();
     const form = useForm<FormValues>();
     const { register, control, handleSubmit, formState } = form;
     const { errors } = formState;
+    const [isLoading, setLoading] = useState<boolean>(false);
 
     const onSubmit = async(formData: FormValues) => {
+        setLoading(true);
 
+        Api.get('sanctum/csrf-cookie').then(async()=>{
+            await Api.post('api/auth/login',formData).then(()=>{             
+                setLoading(false);
+                navigate('/home')
+            }).catch((err)=> {
+                console.log(err);
+            })
+        })             
     }
 
+    
     return(
         <>
             <div className="bg-[#112D4E] flex justify-center items-center p-5 min-h-dvh">
@@ -54,7 +68,11 @@ const Login = (()=> {
                             
                     
                             <div className="button flex flex-col w-full gap-2 items-center">
-                                <button className="bg-[#112D4E] p-3 text-xl text-white rounded-xl w-full hover:bg-[#528cce]">Login</button>
+                                <button disabled={isLoading} className="bg-[#112D4E] p-3 text-xl
+                                text-white rounded-xl w-full hover:bg-[#528cce] flex justify-center items-center gap-2">
+                                    {isLoading && <span className="icon-[gg--spinner] animate-spin"></span>}                           
+                                    <span>Login</span>                                           
+                                </button>
                                 <span className="font-bold">New user? <a href="#" className="underline underline-offset-1">Create an Account</a></span>
                             </div>
 

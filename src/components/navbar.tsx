@@ -1,6 +1,25 @@
 import logo from '../assets/images/Sakurasou no Pet na Kanojo - 18 - Large 28.jpg';
 import { useState } from 'react';
+import Api from "../utils/axios";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from '@tanstack/react-query';
+import { UserInfo } from '../types/user';
 const NavBar = (() => {
+    const navigate = useNavigate();
+
+    const { data } = useQuery({
+        queryKey: ["user"],
+        queryFn: () => Api.get<UserInfo>('api/user').then((res)=>{
+            return res.data
+        })
+    })
+    
+    function logout(){
+        Api.post('api/logout').then(()=>{
+            navigate('/')
+        })
+    }
+
     const [dropdown, setDropdown] = useState(false);
     return (
         <>
@@ -51,7 +70,7 @@ const NavBar = (() => {
                                     <img src={logo} alt="" className='object-cover w-full h-full'/>             
                                 </div>
 
-                                <span className="text-lg font-bold">Mashiro Shiina</span>
+                                <span className="text-lg font-bold">{data?.name}</span>
 
                             </div>
 
@@ -77,7 +96,7 @@ const NavBar = (() => {
                                 <div className="flex justify-between w-full cursor-pointer p-2 hover:bg-blue-300 rounded-lg gap-2">
                                     <div className="flex items-center gap-2">
                                         <span className="icon-[majesticons--door-exit] text-3xl text-[#3D3D3D]"></span>
-                                        <span className='font-bold text-[#3D3D3D]'>Logout</span>           
+                                        <span onClick={logout} className='font-bold text-[#3D3D3D]'>Logout</span>           
                                     </div>
 
                                     <span className="icon-[ic--round-play-arrow] text-3xl text-[#3D3D3D]"></span>                          

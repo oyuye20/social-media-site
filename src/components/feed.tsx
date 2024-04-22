@@ -1,22 +1,24 @@
 import logo from '../assets/images/Sakurasou no Pet na Kanojo - 18 - Large 28.jpg';
 import logo2 from '../assets/images/0048_Movie.png'
-
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { isModalCreatePostOpen, isModalPostOpen } from '../store/modalToggle';
 
-interface ModalProps {
+/* interface ModalProps {
     toggleModal: ()=> void;
-}
+} */
 
-const NewsFeed: React.FC<ModalProps> = (({toggleModal}) => {
+const NewsFeed = (() => {
     const [hoverProfile, setHoverProfile] = useState(false);
     const [isLiked, setLike] = useState(false);
+    const dispatch = useDispatch();
 
     return (
     <div className="xl:ms-[300px] xl:me-[400px] h-full pt-5 me-[300px] pb-5">
         <div className="flex flex-col gap-7 px-4">
             <div className="bg-white p-4 rounded-lg">
                 <input type="text" className="border-2 border-[#CDCDCD] p-2 rounded-lg w-full"
-                placeholder="Post something......"/>
+                placeholder="Post something......" readOnly onClick={()=> dispatch(isModalCreatePostOpen())}/>
             </div>
 
             <div className="bg-white rounded-lg gap-3 flex flex-col ">
@@ -87,7 +89,7 @@ const NewsFeed: React.FC<ModalProps> = (({toggleModal}) => {
 
                     {/* POST */}
                     <div className="overflow-hidden flex justify-center bg-gray-600 rounded-lg">
-                        <img src={logo2} alt="" className=' cursor-pointer object-cover' onClick={toggleModal}/>                     
+                        <img src={logo2} alt="" className=' cursor-pointer object-cover' onClick={()=> dispatch(isModalPostOpen())}/>                     
                     </div>
                     
                     {/* NUMBER OF LIKED POST */}
@@ -119,7 +121,7 @@ const NewsFeed: React.FC<ModalProps> = (({toggleModal}) => {
                 </div>
 
 
-                <button onClick={toggleModal} className='font-bold text-[#3D3D3D] px-4 cursor-pointer flex'>
+                <button className='font-bold text-[#3D3D3D] px-4 cursor-pointer flex'>
                 Load more comments</button>
 
                 {/* ADD NEW COMMENT */}

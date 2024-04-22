@@ -2,15 +2,19 @@ import { motion } from "framer-motion"
 import logo from '../assets/images/Sakurasou no Pet na Kanojo - 18 - Large 28.jpg';
 import logo2 from '../assets/images/0048_Movie.png'
 import { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { isModalPostOpen } from "../store/modalToggle";
 
-interface ModalProps {
+
+/* interface ModalProps {
     isOpen: boolean;
     onClose: ()=> void;
-}
+} */
 
 
-const ModalPost: React.FC<ModalProps> = (({isOpen, onClose}) => {
-    
+const ModalPost = (() => {
+    const dispatch = useDispatch();
+   
     const [dropdown, setDropdown] = useState(false);
     const [loading, setLoading] = useState(false)
     const [pageCount, setPage] = useState(5)
@@ -32,9 +36,11 @@ const ModalPost: React.FC<ModalProps> = (({isOpen, onClose}) => {
     }
 
 
-    return(isOpen &&(
+    return(
         <div className="bg-[rgba(10,10,10,0.5)] w-full min-h-dvh absolute z-20 grid p-10">
-            <motion.div initial={{opacity: 0, scale: 0,}} animate={{opacity: 1, scale:1}} transition={{ ease: "easeOut"}}  exit={{ opacity: 0, scale:0 }} className="grid grid-cols-3 bg-[#1C273D] w-full h-full rounded-xl ">
+            <motion.div initial={{opacity: 0, scale: 0,}} animate={{opacity: 1, scale:1}} 
+            transition={{ ease: "easeOut"}}  exit={{ opacity: 0, scale:0 }} 
+            className="grid grid-cols-3 bg-[#1C273D] w-full h-full rounded-xl ">
 
                 <div className="col-span-2 flex items-center p-5 border-2">
                     <div className="border-2 h-full object-fill justify-center">
@@ -85,8 +91,8 @@ const ModalPost: React.FC<ModalProps> = (({isOpen, onClose}) => {
 
                             
 
-                            <button onClick={onClose} className="icon-[bitcoin-icons--cross-filled] text-3xl 
-                            text-white hover:text-red-500"></button>     
+                            <button className="icon-[bitcoin-icons--cross-filled] text-3xl 
+                            text-white hover:text-red-500" onClick={()=> dispatch(isModalPostOpen())}></button>     
                         </div>
                         
                     </div>  
@@ -178,7 +184,7 @@ const ModalPost: React.FC<ModalProps> = (({isOpen, onClose}) => {
 
             </motion.div>
         </div>
-    ))
+    )
 
 })
 

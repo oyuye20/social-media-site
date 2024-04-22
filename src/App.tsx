@@ -11,13 +11,12 @@ function App() {
 
   return (
     <>
-    <QueryClientProvider client={queryClient}>
-      <Routes>
-        <Route path='/' element={<LazyLogin/>}></Route>
-        <Route path='/home' element={<LazyHome/>}></Route>
-      </Routes>
-    </QueryClientProvider>
-      
+      <QueryClientProvider client={queryClient}>
+        <Routes>
+          <Route path='/' element={<LazyLogin/>}></Route>
+          <Route path='/home' element={<LazyHome/>}></Route>
+        </Routes>
+      </QueryClientProvider>
     </>
   )
 }

@@ -10,6 +10,7 @@ const NavBar = (() => {
     const { data } = useQuery({
         queryKey: ["user"],
         queryFn: () => Api.get<UserInfo>('api/user').then((res)=>{
+            console.log(res.data);
             return res.data
         })
     })

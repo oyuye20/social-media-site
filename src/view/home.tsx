@@ -1,61 +1,37 @@
-
-/* import postPic from '../src/assets/images/11447733.jpg'
-import logo2 from '../src/assets/images/0048_Movie.png'
-import post2 from '../src/assets/images/434677819_1221258789084254_5754619137726087324_n.jpg' */
-import { useState } from 'react';
-import { AnimatePresence } from "framer-motion"
-
 import ModalPost from '../modal/modalPost';
 import NavBar from '../components/navbar';
 import SideBar from '../components/sidebar';
 import NewsFeed from '../components/feed';
 import LeftSideBar from '../components/leftSideBar';
-import Api from "../utils/axios";
-import { UserInfo } from '../types/user';
+import ModalCreatePost from '../modal/modalCreatePost';
 
-const Home: React.FC = (() => {
+import { AnimatePresence } from "framer-motion"
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
-    const [modal, setModal] = useState<boolean>(false);
-    
-
-    Api.get<UserInfo>('api/user').then((res)=>{
-        console.log(res.data);
-    }).catch((err)=>{
-        console.log(err);
-        
-    })
-
-    /* DISABLE BODY SCROLL OF OPENING MODAL */
-    const [disableScroll, setDisableScroll] = useState(false);
-
-    /* TOGGLE MODAL */
-    const toggleModal = () => {   
-        setDisableScroll(!disableScroll)
-        setModal(prevState => !prevState)
-    }
-
+const Home = (() => {
+    const isModalOpen = useSelector((state:RootState) => state.postModal.modalPost);
+    const isModalCreatePostOpen = useSelector((state:RootState) => state.postModal.createModalPost);
+    const disableScroll = useSelector((state:RootState)=> state.postModal.disableScroll)
     return(
         <>
-        
-        <AnimatePresence>
-            <ModalPost isOpen={modal} onClose={toggleModal} />          
-        </AnimatePresence>
-
-        <NavBar />
-
-        <main style={{position: disableScroll ? "fixed" : "relative"}} className="min-h-0 bg-[#1C273D] flex w-full pt-[65px]">
-
+            <AnimatePresence>{isModalCreatePostOpen && (<ModalCreatePost/>)}</AnimatePresence>
             
-            {/* SIDEBAR */}
-            <SideBar />
-            {/* MAIN CONTENT */}
-            <NewsFeed toggleModal={toggleModal}/>
 
+            <AnimatePresence>{isModalOpen && (<ModalPost/>)}</AnimatePresence>
+            <NavBar />
 
-            {/* RIGHT SIDEBAR */}
-            <LeftSideBar />
-            
-        </main>
+            <main style={{position: disableScroll ? "relative" : "fixed"}} 
+            className="min-h-0 bg-[#1C273D] flex w-full pt-[65px]">
+                {/* SIDEBAR */}
+                <SideBar />
+
+                {/* MAIN CONTENT */}
+                <NewsFeed/>
+
+                {/* RIGHT SIDEBAR */}
+                <LeftSideBar />          
+            </main>
         </>
     )
 })

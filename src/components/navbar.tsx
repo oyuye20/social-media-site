@@ -9,14 +9,14 @@ const NavBar = (() => {
 
     const { data } = useQuery({
         queryKey: ["user"],
-        queryFn: () => Api.get<UserInfo>('api/user').then((res)=>{
+        queryFn: () => Api.get<UserInfo>('api/v1/user').then((res)=>{
             console.log(res.data);
             return res.data
         })
     })
     
     function logout(){
-        Api.post('api/logout').then(()=>{
+        Api.post('api/v1/logout').then(()=>{
             navigate('/')
         })
     }

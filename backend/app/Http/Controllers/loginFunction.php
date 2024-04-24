@@ -15,14 +15,12 @@ class loginFunction extends Controller
         ]);
 
         if(Auth::attempt($validate)){
-            $user = Auth::user();
+            Auth::user();
 
             return response([
-                'user' => $user,
+                'message' => 'Successfuly logged in',
             ]);   
-        }      
-
-        else {
+        }else {
             return response(
                 'Incorrect email or password please try again'
             , 422);
@@ -31,12 +29,11 @@ class loginFunction extends Controller
 
     public function registerUser (Request $request){
         $data = $request->validate([
-            'email' => 'required',
+            'email' => 'required|unique:users|max:60',
             'password' => 'required',
-            'name' => 'required',
+            'name' => 'required|max:100',
         ]);
 
-        
         $user = User::create([
             'email' => $data['email'],
             'password' => bcrypt($data['password']),

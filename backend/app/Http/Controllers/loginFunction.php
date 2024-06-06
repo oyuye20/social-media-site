@@ -51,6 +51,6 @@ class loginFunction extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         
-        return response()->json(['message' => 'Successfully logged out']);
+        return response(200);
     }
 }

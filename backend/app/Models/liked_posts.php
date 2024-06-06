@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class comments extends Model
+class liked_posts extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id','posts_id','comment'
+        'user_id','posts_id'
     ];
 }

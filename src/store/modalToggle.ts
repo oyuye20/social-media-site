@@ -1,25 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 
 interface ModalStateType {
     modalPost: boolean,
     createModalPost: boolean,
     disableScroll: boolean
+    postID?: number;
 }
 
 const initialState: ModalStateType = {
     modalPost: false,
     createModalPost: false,
-    disableScroll: true
+    disableScroll: true,
 }
 
 const togglePostModal = createSlice({
     name: "togglePostModal",
     initialState,
     reducers: {
-        isModalPostOpen: (state) => {
+        isModalPostOpen: (state, action) => {
             state.modalPost = !state.modalPost
             state.disableScroll = !state.disableScroll
+            state.postID = action.payload
         },
 
         isModalCreatePostOpen: (state) => {

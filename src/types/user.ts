@@ -8,8 +8,12 @@ export interface UserInfo {
         birthday: string,
         contact_number:string,
         followers: number,
-        image: string,
+        image?: string,
     }
+}
+
+export type PostParams  = {
+    id: string 
 }
 
 export interface LoginValues {
@@ -17,14 +21,26 @@ export interface LoginValues {
     password: string,
 }
 
+
 export interface PostTypes {
-    id: number,
-    user_id: number,
+    PostID: number,
+    name: string,
     description: string,
-    image: string,
+    image?: string,
     total_likes: number,
     total_comment: number,
-    created_at: string,
+    created_at: Date,
+    LikePostUserID: number,
+    LikePostID: number,
+    UserID: number,
+}
+
+export interface ApiResponse {
+    posts: PostTypes[];
+}
+
+export interface PostTypeByID {
+    name: string
 }
 
 export interface CommentTypes{
@@ -32,5 +48,5 @@ export interface CommentTypes{
     user_id: number,
     post_id: number,
     comment: string,
-    create_at: string,
+    created_at: Date,
 }

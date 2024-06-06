@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_infos', function (Blueprint $table) {
-            $table->id();
+            $table->id('user_infos_id');
             $table->unsignedBigInteger('user_id');
             $table->text('image');
             $table->string('contact_number');
@@ -23,10 +23,11 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
         });
 
+    
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
+            $table->id('id');
             $table->unsignedBigInteger('user_id');
-            $table->text('description');
+            $table->longText('description');
             $table->text('image');
             $table->bigInteger('total_likes');
             $table->bigInteger('total_comment');
@@ -35,16 +36,26 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
         });
 
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
+        Schema::create('liked_posts', function (Blueprint $table) {
+            $table->id('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('posts_id');           
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('posts_id')->references('id')->on('posts');
+        });
+
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id('id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('posts_id');
             $table->longText('comment');           
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('post_id')->references('id')->on('posts');
-        });
+            $table->foreign('posts_id')->references('id')->on('posts');
+        });     
     }
 
     /**

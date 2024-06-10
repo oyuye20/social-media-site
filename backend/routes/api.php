@@ -41,14 +41,20 @@ Route::prefix('v1')->group(function(){
 
 
     /* FOR TESTING */
-    Route::get('get',[commentFunction::class, 'getCommentsByID']);
-
     Route::prefix('post')->group(function(){
         Route::post('create',[postFunction::class, 'createPost']);
         
         Route::delete('delete/{id}',[postFunction::class, 'deletePost']);
         Route::get('/{id?}',[postFunction::class, 'getPost']);
         Route::put('update/{id}',[postFunction::class, 'updatePost']);
+    });
+
+    Route::prefix('comment')->group(function(){
+        Route::get('/{id?}',[commentFunction::class, 'indexComments']);
+        Route::post('create',[commentFunction::class, 'addComment']);
+        
+        Route::patch('update2',[commentFunction::class, '']);
+        Route::delete('delete',[commentFunction::class, '']);
     });
 
 
@@ -71,13 +77,13 @@ Route::prefix('v1')->group(function(){
         });
         
         /* RESERVED ROUTE (NOT CONFIGURED PROPERLY) */
-        Route::prefix('comment')->group(function(){
-            Route::get('/',[commentFunction::class, '']);
+        /* Route::prefix('comment')->group(function(){
+            Route::get('/{id?}',[commentFunction::class, 'indexComments']);
             Route::post('create',[commentFunction::class, 'addComment']);
             
             Route::patch('update2',[commentFunction::class, '']);
             Route::delete('delete',[commentFunction::class, '']);
-        });
+        }); */
 
         /* ROUTE FOR UPDATE USER PROFILE */
         Route::prefix('profile')->group(function(){

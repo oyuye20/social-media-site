@@ -21,19 +21,35 @@ export interface LoginValues {
     password: string,
 }
 
+export interface Users_liked {
+    like_id: number,
+    user_liked_id: number,
+    users_liked: string
+}
+
+
+export interface Comments {
+    comment_id: number,
+    user_id_comment: number,
+    commenter: string,
+    comment: string,
+    comment_date_posted: Date
+}
 
 export interface PostTypes {
-    PostID: number,
-    name: string,
-    description: string,
-    image?: string,
+    post_id: number,
+    post_author: string,
+    post_author_id: number,
+    post_description: string,
     total_likes: number,
-    total_comment: number,
-    created_at: Date,
-    LikePostUserID: number,
-    LikePostID: number,
-    UserID: number,
+    total_comments: number,
+    image: string,
+    date_posted: Date,
+
+    users_liked: Array<Users_liked>
+    comments: Array<Comments>
 }
+
 
 export interface ApiResponse {
     posts: PostTypes[];

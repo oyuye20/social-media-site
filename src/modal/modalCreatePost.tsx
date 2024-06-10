@@ -83,7 +83,7 @@ const ModalCreatePost = (()=> {
                     <div className="description border-2 border-[#0C1629] rounded-lg">
                         <textarea id="" className='w-full bg-transparent p-2 outline-none
                         text-white resize-none h-[100px]' placeholder='Write Something......'
-                        {...register("description")}></textarea>
+                        {...register("post_description")}></textarea>
                     </div>
 
                     {imageFile && (

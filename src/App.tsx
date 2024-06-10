@@ -1,4 +1,4 @@
-import { lazy } from "react"
+import { lazy, Suspense } from "react"
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 const LazyHome = lazy(()=> import("./view/home"))
 const LazyPostModal = lazy(()=> import("./modal/modalPost"))
@@ -17,7 +17,14 @@ function App() {
         <Routes>
           <Route path='/login' element={<LazyLogin/>}></Route>
           <Route path='/' element={<LazyHome/>}></Route>
-          <Route path='/post/:id' element={<PostModal/>}></Route>
+
+
+          <Route path='/post/:id' element={(
+            <Suspense fallback={<p>Loading.....</p>}>
+              <LazyPostModal/>
+            </Suspense>
+          )}></Route>
+
         </Routes>
       </QueryClientProvider>
     </>

@@ -19,7 +19,7 @@ const NewsFeed = (() => {
 
     /* FETCH POSTS DATA */
     const posts = useQuery({
-        queryKey: ["posts"],
+        queryKey: ["post"],
         queryFn: getPosts
     })
 
@@ -33,7 +33,7 @@ const NewsFeed = (() => {
     /*  */
     const likePostMutation = useMutation({
         mutationFn: likePost,
-        onSettled: ()=> queryClient.invalidateQueries({queryKey: ["posts"]})
+        onSettled: ()=> queryClient.invalidateQueries({queryKey: ["post"]})
     })
 
     const likePosts = ((id:number) => {
@@ -86,9 +86,9 @@ const NewsFeed = (() => {
                                 <div className="flex flex-col relative">
                                     <span className='text-[#3D3D3D] font-bold text-lg hover:underline 
                                     underline-offset-4 cursor-pointer'/*  onMouseEnter={()=> setHoverProfile(!hoverProfile)} 
-                                    onMouseLeave={()=> setHoverProfile(!hoverProfile)} */>{post.name}</span>
+                                    onMouseLeave={()=> setHoverProfile(!hoverProfile)} */>{post.post_author}</span>
 
-                                    <span className='text-[#3D3D3D] text-md font-medium'>{post.created_at.toString()}</span>
+                                    <span className='text-[#3D3D3D] text-md font-medium'>{post.date_posted.toString()}</span>
 
                                     {hoverProfile && (
                                         <div className="w-[250px] absolute left-[100px] p-3
@@ -134,11 +134,11 @@ const NewsFeed = (() => {
                         </div>
 
                         <div className="s">
-                            <p className='text-lg text-[#3D3D3D]'>{post.description}</p>
+                            <p className='text-lg text-[#3D3D3D]'>{post.post_description}</p>
                         </div>
                         
                         {/* POST */}
-                        <Link to={`/post/${post.PostID}`} className="overflow-hidden flex 
+                        <Link to={`/post/${post.post_id}`} className="overflow-hidden flex 
                         justify-center bg-gray-600 rounded-lg">
                             <img src={"http://localhost:8000/image/"
                             + post.image} alt="" 
@@ -149,25 +149,42 @@ const NewsFeed = (() => {
                         
                         {/* NUMBER OF LIKED POST */}
                         <div className="flex gap-4 p-3">
-                            <div className="flex items-center gap-1">
 
-                                <button disabled={likePostMutation.isPending} 
-                                type='button' onClick={()=> likePosts(post.PostID)} 
-                                style={{color: post.LikePostUserID ===  getUser.data?.id ?  "red": "black"}} 
-                                className="icon-[ph--heart-fill] text-3xl 
-                                hover:text-red-500 hover:cursor-pointer"></button> 
-                                    
-                                    <span className='font-bold text-[#3D3D3D]' 
-                                    style={{color: post.LikePostUserID ===  getUser.data?.id ?  "red": "black"}}>
+                             
+                            {/* CHANGE FONT COLOR WHEN USER LIKES THE POSTS */}            
+                            {(post.users_liked.length === 0) &&(
+                                <div className='flex items-center gap-1 font-bold '>
+                                    <button disabled={likePostMutation.isPending} 
+                                    type='button' onClick={()=> likePosts(post.post_id)} 
+                                    className="icon-[ph--heart-fill] text-3xl 
+                                    hover:text-red-500 hover:cursor-pointer 
+                                    border-2 border-black"></button>
 
                                     {post.total_likes ? post.total_likes : "Like this post"}
-                                </span>                     
-                            </div>
+                                </div>
+                            )}                  
 
+
+                            {post.users_liked.map((l) => {
+                            return (
+                                <div key={l.like_id}>
+                                    <div style={{color: l.user_liked_id ===  getUser.data?.id ?  "red": "black"}}
+                                    className="flex items-center gap-1 font-bold">
+                                        <button  disabled={likePostMutation.isPending} 
+                                        type='button' onClick={()=> likePosts(post.post_id)} 
+                                        className="icon-[ph--heart-fill] text-3xl 
+                                        hover:text-red-500 hover:cursor-pointer"></button>
+                                
+                                        {post.total_likes ? post.total_likes : "Like this post"}        
+                                    </div>
+                                </div>
+                            )})}
+
+                          
                             <div className="flex items-center gap-1">
                                 <span className="icon-[ic--round-message] text-3xl"></span> 
                                 <span className='font-bold text-[#3D3D3D]'>
-                                {post.total_comment ? post.total_comment : "No Comments yet"}</span>                     
+                                {post.total_comments ? post.total_comments : "No Comments yet"}</span>                     
                             </div>
                         </div>
                     </div>
@@ -196,7 +213,7 @@ const NewsFeed = (() => {
                         </div>
 
 
-                        <Link to={`/post/${post.PostID}`} 
+                        <Link to={`/post/${post.post_id}`} 
                         className="flex relative items-center w-full justify-end">
                             <button type="submit" className="icon-[uil--message] text-4xl 
                             text-[#CDCDCD] absolute mx-2 hover:bg-red-500"></button>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\notification;
 use App\Http\Requests\PostRequest;
 use App\Models\liked_posts;
 use App\Models\posts;
@@ -15,7 +16,7 @@ class postFunction extends Controller
 
     /* GET ALL POST OR BY ID (OPTIONAL) */
     public function getPost($id = null){
-      
+
         /* FOR QUERY PARAMETER */
         $query = '';
 
@@ -24,30 +25,29 @@ class postFunction extends Controller
 
         /* JOINING BETWEEN USER INFO AND POST AUTHOR */
         ->leftJoin('users AS u','u.id','=','p.user_id')
-        
+
 
         /* JOINING BETWEEN LISTS OF COMMENTS WITH POST ID */
-        
-        ->leftJoin('comments AS c','p.id','=','c.posts_id') 
+        ->leftJoin('comments AS c','p.id','=','c.posts_id')
 
         /* JOINING COMMENT AND USER TO GET WHO'S USER POST COMMENT */
-        ->leftJoin('users AS comment_user','comment_user.id','=','c.user_id') 
+        ->leftJoin('users AS comment_user','comment_user.id','=','c.user_id')
 
         /* JOIN LIKED USERS TABLE */
-        ->leftJoin('liked_posts as likePost','likePost.posts_id','=','p.id') 
-        ->leftJoin('users as userLikedPost','userLikedPost.id','=','likePost.user_id') 
-        
+        ->leftJoin('liked_posts as likePost','likePost.posts_id','=','p.id')
+        ->leftJoin('users as userLikedPost','userLikedPost.id','=','likePost.user_id')
+
 
         ->select('u.name as post_author','p.id as post_id','p.image as image',
-        'p.description as post_description','p.total_likes','p.total_comment', 
-        'p.created_at as date_posted','p.user_id as post_author_id','c.comment as comment_post','c.id as comment_id', 
-        'comment_user.name as commenter','c.created_at as comment_date_posted', 
+        'p.description as post_description','p.total_likes','p.total_comment',
+        'p.created_at as date_posted','p.user_id as post_author_id','c.comment as comment_post','c.id as comment_id',
+        'comment_user.name as commenter','c.created_at as comment_date_posted',
         'c.user_id as user_id_comment','p.total_likes as total_likes',
-        'p.total_comment as total_comments' ,'likePost.id as like_id', 
+        'p.total_comment as total_comments' ,'likePost.id as like_id',
         'likePost.posts_id as posts_id_like', 'userLikedPost.name as user_liked'
         ,'likePost.user_id as user_liked_id')
         ->orderByDesc('p.created_at')
-        
+
         ->when($id, function ($query, int $id) {
             $query->where('p.id', '=', $id);
         })->get();
@@ -108,17 +108,14 @@ class postFunction extends Controller
         if($id){
             return $postLists->where('p.id','=', $id);
         }else{
-            /* return $postLists->get(); */
-        }   
+        }
     }
 
     public function getPostByID($id){
 
     }
 
-
-
-    public function createPost(PostRequest $request){       
+    public function createPost(PostRequest $request){
         try {
             DB::beginTransaction();
             $filenameIMG = NULL;
@@ -132,18 +129,20 @@ class postFunction extends Controller
 
             posts::create([
                 'user_id' => Auth::id(),
-                'total_likes' => 0,
-                'total_comment' => 0,
                 'description' => $request->post_description,
                 'image' => $filenameIMG
             ]);
 
+            $user = Auth::user()->name;
+
+            $hello = $user . " created a new post";
+            event(new notification($hello));
+
             DB::commit();
             return response(200);
-
         } catch (\Throwable $th) {
             DB::rollBack();
-            return response($th);            
+            return response($th);
         }
     }
 
@@ -152,13 +151,13 @@ class postFunction extends Controller
 
         try {
             DB::beginTransaction();
-            
+
             $checkPostIfExists->where('id','=',$id)->update([
                 'description' => $request->description
             ]);
 
             return response(200);
-            
+
             DB::commit();
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -169,12 +168,11 @@ class postFunction extends Controller
     public function deletePost($id){
         $checkPostIfExists = posts::findOrFail($id);
         $checkPostIfExists->where('id', '=', $id)->delete();
-        
+
         return response(200);
     }
 
-
-    public function likePostFunction(Request $request){ 
+    public function likePostFunction(Request $request){
 
         $checkIfLiked = liked_posts::where('posts_id','=',$request->id)->first();
 
@@ -189,7 +187,8 @@ class postFunction extends Controller
             posts::where('id','=',$request->id)->decrement('total_likes', 1);
         }
 
-    
+
         return response('success');
     }
+
 }

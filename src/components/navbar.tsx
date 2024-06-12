@@ -4,6 +4,22 @@ import Api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
 import { getUserInfo } from '../utils/axiosRequest';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
+
+import { Input } from "@/components/ui/input"
 
 const NavBar = (() => {
     const navigate = useNavigate();
@@ -25,17 +41,19 @@ const NavBar = (() => {
     const [dropdown, setDropdown] = useState(false);
     return (
         <>
-        <nav className="w-full bg-[#3F5175] p-3 px-6 flex items-center justify-between fixed top-0
-        z-10">
+        <nav className="w-full bg-[#020817] p-3 px-6 flex items-center justify-between fixed top-0
+        z-10 border-b-[0.5px]">
+
+
+
+
             <div className="flex items-center gap-3">
                 <span className="text-2xl icon-[uil--message] text-white"></span>
                 <h1 className="text-white font-bold text-2xl">Social Site</h1>
             </div>
 
-            <div className="search relative flex items-center ">
-                {/* <span className="icon-[ooui--search] text-xl text-[#9A9A9A] absolute mx-1 opacity-50"></span> */}
-                <input type="text" className="outline-none w-[450px] rounded-lg text-lg px-4 py-2"
-                placeholder="Search something...."/>
+            <div className="search relative flex items-center w-[500px]">
+                <Input type="email" placeholder="Search Something"/>
             </div>
 
             <div className="flex items-center gap-3">
@@ -58,7 +76,28 @@ const NavBar = (() => {
                     </div>
                 </div>
 
-                <div className="relative">
+                <DropdownMenu>
+                    <DropdownMenuTrigger>
+                        <Avatar>
+                            <AvatarImage src={logo} alt="profile pic" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+                    </DropdownMenuTrigger>
+
+
+                    <DropdownMenuContent>
+                        <DropdownMenuLabel>{data?.name}</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                        <DropdownMenuItem>
+                            Logout
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+
+
+
+                {/*<div className="relative">
                     <div className="h-[40px] w-[40px] rounded-full overflow-hidden cursor-pointer"
                     onClick={(()=> setDropdown(!dropdown))}>
                         <img src={logo} alt="" className='object-cover w-full h-full'/>             
@@ -109,7 +148,7 @@ const NavBar = (() => {
                         </div> 
                     )}
 
-                </div>         
+                </div> */}
             </div>       
         </nav>
         </>

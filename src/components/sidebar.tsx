@@ -1,7 +1,7 @@
 const SideBar = (() => {
     return (
     <>
-        <div className="xl:flex flex-col gap-6 w-[300px] fixed h-full px-5 mt-3 bg-[#1C273D] z-10 hidden">
+        <div className="xl:flex flex-col gap-6 w-[300px] fixed h-full px-5 mt-3 bg-[#020817] z-10 hidden">
             <a className="flex items-center gap-2 p-2 rounded-lg cursor-pointer
                 bg-[#6177A4]">
                 <span className="icon-[iconamoon--home-fill] text-2xl text-white"></span>

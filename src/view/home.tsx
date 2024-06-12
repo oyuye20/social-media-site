@@ -2,7 +2,7 @@ import ModalPost from '../modal/modalPost';
 import NavBar from '../components/navbar';
 import SideBar from '../components/sidebar';
 import NewsFeed from '../components/feed';
-import LeftSideBar from '../components/leftSideBar';
+import RightSideBar from '../components/rightSideBar.tsx';
 import ModalCreatePost from '../modal/modalCreatePost';
 import { AnimatePresence } from "framer-motion"
 import { useSelector } from 'react-redux';
@@ -15,16 +15,19 @@ const Home = (() => {
     const isModalCreatePostOpen = useSelector((state:RootState) => state.postModal.createModalPost);
     const disableScroll = useSelector((state:RootState)=> state.postModal.disableScroll);
 
+
     useEffect(()=> {
         const channel = pusher.subscribe('channel-name');
-        
+
         channel.bind('new-channel-name', (e:string)=>{
             alert(JSON.stringify(e));
         });
-    }, [])
 
-    
-    
+        return () => {
+            channel.unbind('new-channel-name');
+            pusher.unsubscribe('channel-name');
+        };
+    }, [])
 
 
     return(
@@ -36,7 +39,7 @@ const Home = (() => {
             <NavBar />
 
             <main style={{position: disableScroll ? "relative" : "fixed"}} 
-            className="min-h-0 bg-[#1C273D] flex w-full pt-[65px] ">
+            className="min-h-0 bg-[#020817] flex w-full pt-[65px] ">
                 {/* SIDEBAR */}
                 <SideBar />
 
@@ -44,7 +47,7 @@ const Home = (() => {
                 <NewsFeed/>
 
                 {/* RIGHT SIDEBAR */}
-                <LeftSideBar />          
+                <RightSideBar />
             </main>
         </>
     )

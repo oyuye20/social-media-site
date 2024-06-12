@@ -19,7 +19,7 @@ class loginFunction extends Controller
 
             return response([
                 'message' => 'Successfuly logged in',
-            ]);   
+            ]);
         }else {
             return response(
                 'Incorrect email or password please try again'
@@ -30,7 +30,7 @@ class loginFunction extends Controller
     public function registerUser (Request $request){
         $data = $request->validate([
             'email' => 'required|unique:users|max:60',
-            'password' => 'required',
+            'password' => 'required|min:6',
             'name' => 'required|max:100',
         ]);
 
@@ -50,7 +50,7 @@ class loginFunction extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
+
         return response(200);
     }
 }

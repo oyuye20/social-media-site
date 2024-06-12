@@ -8,6 +8,27 @@ import { PostTypes } from '../types/user';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { createPosts, getUserInfo } from '../utils/axiosRequest';
 
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+    DialogClose
+} from "@/components/ui/dialog"
+
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+} from "@/components/ui/avatar"
+
+import {Input} from "@/components/ui/input.tsx";
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
+
+
 const ModalCreatePost = (()=> {
 
     const dispatch = useDispatch();
@@ -52,7 +73,47 @@ const ModalCreatePost = (()=> {
 
     return(
     <>
-        <div className="bg-[rgba(10,10,10,0.5)] w-full min-h-dvh absolute z-20 p-10 flex
+
+        <Dialog>
+            <DialogTrigger>
+                <p className="font-medium mb-3 text-xl text-white flex">
+                    Post Something</p>
+                <Input type="text" placeholder="Email" readOnly/>
+            </DialogTrigger>
+
+            <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>Create a new Post</DialogTitle>
+
+                    <div className="flex items-center
+                    gap-3 py-2">
+                        <Avatar>
+                            <AvatarImage src={logo} alt="profile pic" />
+                            <AvatarFallback>CN</AvatarFallback>
+                        </Avatar>
+
+                        <div className="p">{getUser.data?.name}</div>
+
+                    </div>
+
+
+
+                </DialogHeader>
+
+                <form onSubmit={handleSubmit(onSubmit)} className="grid w-full gap-2">
+                    <Textarea placeholder="Type your message here." {...register("post_description")}/>
+                    <Input id="picture" type="file"/>
+                    <Button type={"submit"} disabled={createPostMutation.isPending}>Post</Button>
+                </form>
+
+
+
+
+            </DialogContent>
+        </Dialog>
+
+
+        {/*<div className="bg-[rgba(10,10,10,0.5)] w-full min-h-dvh absolute z-20 p-10 flex
         justify-center items-center">
             <motion.form onSubmit={handleSubmit(onSubmit)}  
             initial={{opacity: 0, scale: 0,}} animate={{opacity: 1, scale:1}} 
@@ -105,7 +166,7 @@ const ModalCreatePost = (()=> {
                 </div>
 
             </motion.form>
-        </div>
+        </div>*/}
     </>
     )
     

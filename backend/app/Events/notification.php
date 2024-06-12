@@ -19,9 +19,9 @@ class notification implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct()
+    public function __construct($message)
     {
-        $this->message = "Hello Backend Websocket!";
+        $this->message = $message;
     }
 
     /**
@@ -31,8 +31,6 @@ class notification implements ShouldBroadcast
      */
     public function broadcastOn()/* : array */
     {
-        
-
         return [
             new Channel('channel-name'),
         ];

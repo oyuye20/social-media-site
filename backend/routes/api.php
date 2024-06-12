@@ -43,7 +43,7 @@ Route::prefix('v1')->group(function(){
     /* FOR TESTING */
     Route::prefix('post')->group(function(){
         Route::post('create',[postFunction::class, 'createPost']);
-        
+
         Route::delete('delete/{id}',[postFunction::class, 'deletePost']);
         Route::get('/{id?}',[postFunction::class, 'getPost']);
         Route::put('update/{id}',[postFunction::class, 'updatePost']);
@@ -52,7 +52,7 @@ Route::prefix('v1')->group(function(){
     Route::prefix('comment')->group(function(){
         Route::get('/{id?}',[commentFunction::class, 'indexComments']);
         Route::post('create',[commentFunction::class, 'addComment']);
-        
+
         Route::patch('update2',[commentFunction::class, '']);
         Route::delete('delete',[commentFunction::class, '']);
     });
@@ -63,24 +63,24 @@ Route::prefix('v1')->group(function(){
     /* PROTECTED ROUTES */
     Route::middleware(['auth:sanctum'])->group(function (){
         Route::post('logout', [loginFunction::class, 'logout']);
-        
+
         /* POST ROUTE FUNCTION */
         Route::prefix('post')->group(function(){
             /* Route::get('/{id?}',[postFunction::class, 'getPost']); */
 
 
             /* Route::get('get/{id}',[postFunction::class, 'getPostByID']); */
-            
+
             Route::post('like',[postFunction::class, 'likePostFunction']);
             /* Route::put('update/{id}',[postFunction::class, 'createPost']); */
             Route::delete('delete',[postFunction::class, 'deletePost']);
         });
-        
+
         /* RESERVED ROUTE (NOT CONFIGURED PROPERLY) */
         /* Route::prefix('comment')->group(function(){
             Route::get('/{id?}',[commentFunction::class, 'indexComments']);
             Route::post('create',[commentFunction::class, 'addComment']);
-            
+
             Route::patch('update2',[commentFunction::class, '']);
             Route::delete('delete',[commentFunction::class, '']);
         }); */
@@ -91,7 +91,7 @@ Route::prefix('v1')->group(function(){
         });
 
 
-        
+
     });
 
 });

@@ -36,12 +36,12 @@ export const createPosts = (async(dataForm:PostTypes)=> {
     formData.append('image', dataForm.image![0] ?? '');
     formData.append('post_description', dataForm.post_description);
 
-    await Api.post('api/v1/post/create', formData 
+    await Api.post('api/v1/post/create', formData
     ,{headers: {'Content-Type': 'multipart/form-data'}}).then((res)=>{
         /* reset() */
         console.log(res.data);
     }).catch((err)=>{
-        console.log(err.data);
+        console.log(err);
     })
 })
 
@@ -57,7 +57,7 @@ export const deletePost = async(id:string) => {
     })
 }
 
-export const likePost = (id:string) => {
+export const likePost = (id:number) => {
     return Api.post('/api/v1/post/like', {id: id}).then(()=>{
         
     }).catch((err)=>{

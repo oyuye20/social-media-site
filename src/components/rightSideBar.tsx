@@ -1,8 +1,8 @@
 import logo from '../assets/images/Sakurasou no Pet na Kanojo - 18 - Large 28.jpg';
 
-const LeftSideBar = (() => {
+const RightSideBar = (() => {
     return(
-        <div className="xl:w-[400px] fixed right-0 h-full border-2 p-5 w-[300px]">
+        <div className="xl:w-[400px] fixed right-0 h-full p-5 w-[300px]">
             <div className="rounded-lg bg-white flex flex-col p-7 gap-5">
                 <h1 className='font-bold text-[#3D3D3D] text-xl'>People who you may know</h1>
 
@@ -29,4 +29,4 @@ const LeftSideBar = (() => {
     )
 })
 
-export default LeftSideBar
+export default RightSideBar

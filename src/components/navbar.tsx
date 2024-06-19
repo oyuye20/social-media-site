@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Api from "../utils/axios";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from '@tanstack/react-query';
-import { getUserInfo } from '../utils/axiosRequest';
+import { getUserInfo } from "@/apiCall/userInfoRequests.ts";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,18 +21,17 @@ import {
 
 import { Input } from "@/components/ui/input"
 
+import {GetUserQuery} from "@/apiCall/TanStackQuery/userQuery.tsx";
+
+
 const NavBar = (() => {
     const navigate = useNavigate();
+    const { data} = GetUserQuery();
 
-    const { data } = useQuery({
-        queryKey: ["user"],
-        refetchOnWindowFocus: false,
-        queryFn: getUserInfo
-    })
 
     function logout(){
         Api.post('api/v1/logout').then(()=>{
-            navigate('/login')
+            navigate('/')
         }).catch((err)=>{
             console.log(err);
         })
@@ -89,7 +88,7 @@ const NavBar = (() => {
                         <DropdownMenuLabel>{data?.name}</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>Profile</DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={logout}>
                             Logout
                         </DropdownMenuItem>
                     </DropdownMenuContent>

@@ -32,10 +32,8 @@ const Home = (() => {
 
     return(
         <>
-            <AnimatePresence>{isModalCreatePostOpen && (<ModalCreatePost/>)}</AnimatePresence>
-            
-
-            <AnimatePresence>{isModalOpen && (<ModalPost/>)}</AnimatePresence>
+            {/*<AnimatePresence>{isModalCreatePostOpen && (<ModalCreatePost/>)}</AnimatePresence>*/}
+            {/*<AnimatePresence>{isModalOpen && (<ModalPost/>)}</AnimatePresence>*/}
             <NavBar />
 
             <main style={{position: disableScroll ? "relative" : "fixed"}} 

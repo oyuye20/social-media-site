@@ -19,7 +19,7 @@ const Login = (()=> {
         Api.get('sanctum/csrf-cookie').then(async()=>{
             await Api.post('api/v1/auth/login',formData).then(()=>{             
                 setLoading(false);
-                navigate('/')
+                navigate('/home')
             }).catch((err)=> {
                 console.log(err);
             })

@@ -6,6 +6,7 @@ use App\Events\notification;
 use App\Http\Requests\PostRequest;
 use App\Models\liked_posts;
 use App\Models\posts;
+use App\Models\User;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,6 +17,96 @@ class postFunction extends Controller
 
     /* GET ALL POST OR BY ID (OPTIONAL) */
     public function getPost($id = null){
+
+        /*return User::with(['posts'=> function ($query) use ($id) {
+            return $query->where('posts.id','=',$id);
+        }])->get();*/
+
+        
+
+
+
+
+        /* FOR QUERY PARAMETER */
+        $query = '';
+
+        /* BASE POST QUERY */
+        $postLists = DB::table('posts as p')
+
+        /* JOINING BETWEEN USER INFO AND POST AUTHOR */
+        ->leftJoin('users AS u','u.id','=','p.user_id')
+
+        /* JOINING BETWEEN LISTS OF COMMENTS WITH POST ID */
+        ->leftJoin('comments AS c','c.posts_id','=','p.id')
+
+
+        /* JOINING COMMENT AND USER TO GET WHO'S USER POST COMMENT */
+//        ->leftJoin('users AS comment_user','comment_user.id','=','c.user_id')
+
+        /* JOIN LIKED USERS TABLE */
+//        ->leftJoin('liked_posts as likePost','likePost.posts_id','=','p.id')
+//        ->leftJoin('users as userLikedPost','userLikedPost.id','=','likePost.user_id')
+
+        ->select('u.name as post_author','p.id as post_id','p.image as image',
+        'p.description as post_description','p.total_likes',
+        'p.created_at as date_posted','p.user_id as post_author_id',
+        'p.total_likes as total_likes', 'p.total_comment as total_comments',
+
+        'c.comment')
+        ->orderByDesc('p.created_at')
+        ->when($id, function ($query, int $id) {
+            $query->where('p.id', '=', $id);
+        })->get();
+        $posts = [];
+
+
+
+
+        /*return response($postLists);*/
+
+        /* ARRAY FOR POSTS */
+        /*$posts = [];
+
+        foreach ($postLists as $row) {
+
+            if(!isset($posts[$row->post_id])){
+                $posts[$row->post_id] = [
+                    'post_id'=> $row->post_id,
+                    'post_author_id' => $row->post_author_id,
+                    'post_author' => $row->post_author,
+                    'post_description'=> $row->post_description,
+                    'total_likes' => $row->total_likes,
+                    'total_comments' => $row->total_comments,
+                    'image' => $row->image,
+                    'date_posted' => $row->date_posted,
+                    'comments' => [],
+                    'users_liked' => [],
+                ];
+            }
+
+
+            if($row->comment_id){
+                $posts[$row->post_id]['comments'][]=[
+                    'comment_id' => $row->comment_id,
+                    'user_id_comment' => $row->user_id_comment,
+                    'commenter' => $row->commenter,
+                    'comment' => $row->comment_post,
+                    'comment_date_posted' => $row->comment_date_posted
+                ];
+            }
+
+            if($row->like_id){
+                $posts[$row->post_id]['users_liked'][]=[
+                    'like_id' => $row->like_id,
+                ];
+            }
+        };
+
+        $postList = array_values($posts);*/
+
+
+    }
+    public function getPostbyUser($id = null){
 
         /* FOR QUERY PARAMETER */
         $query = '';
@@ -49,9 +140,8 @@ class postFunction extends Controller
         ->orderByDesc('p.created_at')
 
         ->when($id, function ($query, int $id) {
-            $query->where('p.id', '=', $id);
+            $query->where('p.user_id', '=', $id);
         })->get();
-
 
         /* ARRAY FOR POSTS */
         $posts = [];
@@ -96,23 +186,6 @@ class postFunction extends Controller
 
         $postList = array_values($posts);
         return response($postList);
-
-        /* FOR SEARCH FUNCTION QUERY */
-        /* if($query){
-            return $postLists = $postLists
-            ->where('p.description', 'LIKE', '%'.$query.'%')
-            ->get();
-        } */
-
-        /* FOR ID QUERY (OPTIONAL) */
-        if($id){
-            return $postLists->where('p.id','=', $id);
-        }else{
-        }
-    }
-
-    public function getPostByID($id){
-
     }
 
     public function createPost(PostRequest $request){

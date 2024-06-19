@@ -6,7 +6,8 @@ import { motion } from "framer-motion"
 import { useForm } from "react-hook-form"
 import { PostTypes } from '../types/user';
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
-import { createPosts, getUserInfo } from '../utils/axiosRequest';
+import { createPosts } from "@/apiCall/postRequests..ts";
+import { getUserInfo } from "@/apiCall/userInfoRequests.ts";
 
 import {
     Dialog,
@@ -27,27 +28,21 @@ import {
 import {Input} from "@/components/ui/input.tsx";
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import {GetUserQuery} from "@/apiCall/TanStackQuery/userQuery.tsx";
 
 
 const ModalCreatePost = (()=> {
-
     const dispatch = useDispatch();
-    const queryClient = useQueryClient();
-
+    const getUser = GetUserQuery();
 
     const form = useForm<PostTypes>();
     const { register, handleSubmit, formState, reset } = form;
     const { errors } = formState;
 
-    /* FETCH USER INFO  */
-    const getUser = useQuery({
-        queryKey: ["users"],
-        queryFn: getUserInfo
-    })
+
 
     /* FOR SETTING A TEMPORARY IMAGE DISPLAY */
     const [imageFile, setImageFile] = useState<File | null>(null);
-
 
     /* FOR VIEWING AN IMAGE BEFORE UPLOAD TO THE SERVER */
     const imagePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,7 +83,7 @@ const ModalCreatePost = (()=> {
                     <div className="flex items-center
                     gap-3 py-2">
                         <Avatar>
-                            <AvatarImage src={logo} alt="profile pic" />
+                            <AvatarImage src={logo} alt="profile pic"/>
                             <AvatarFallback>CN</AvatarFallback>
                         </Avatar>
 

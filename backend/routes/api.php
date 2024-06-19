@@ -42,10 +42,12 @@ Route::prefix('v1')->group(function(){
 
     /* FOR TESTING */
     Route::prefix('post')->group(function(){
-        Route::post('create',[postFunction::class, 'createPost']);
-
-        Route::delete('delete/{id}',[postFunction::class, 'deletePost']);
         Route::get('/{id?}',[postFunction::class, 'getPost']);
+        Route::get('user/{id?}',[postFunction::class, 'getPostbyUser']);
+
+
+        Route::post('create',[postFunction::class, 'createPost']);
+        Route::delete('delete/{id}',[postFunction::class, 'deletePost']);
         Route::put('update/{id}',[postFunction::class, 'updatePost']);
     });
 
@@ -87,6 +89,7 @@ Route::prefix('v1')->group(function(){
 
         /* ROUTE FOR UPDATE USER PROFILE */
         Route::prefix('profile')->group(function(){
+            Route::get('/{id}', [userProfileFunction::class, 'getProfileByID']);
             Route::post('update', [userProfileFunction::class, 'updateUserProfile']);
         });
 

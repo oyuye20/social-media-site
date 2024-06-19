@@ -15,7 +15,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const ModalPost = (() => {
     
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -33,6 +32,7 @@ const ModalPost = (() => {
         queryKey: ["commentByID", id],
         queryFn: ()=> getCommentsByID(id!),
     })
+
 
     /* FETCH POSTS BY ID */
     const fetchPostID = useQuery({
@@ -142,7 +142,7 @@ const ModalPost = (() => {
                                 </div>
         
                                 <div className="absolute right-0 me-3 flex gap-5">
-        
+
                                     <div className="relative">
                                         {getUser.data?.id === fetchPostID.data?.post_author_id && (
                                             <button className="icon-[solar--menu-dots-bold] text-3xl text-white 
@@ -211,6 +211,7 @@ const ModalPost = (() => {
                                 
                                 {/* FETCH COMMENT BY POST ID */}
 
+                                
 
                                 {commentIDQuery.data?.length === 0 ? (
                                     <>
